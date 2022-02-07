@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:41:34 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/02 12:27:47 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/07 11:13:10 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ long int	ft_actual_time(void)
 	return (time);
 }
 
-void	ft_usleep(long int time_in_ms)
+void	ft_usleep(long int time_in_ms, t_philo philo)
 {
 	long int	start_time;
 
 	start_time = 0;
 	start_time = ft_actual_time();
-	while ((ft_actual_time() - start_time) < time_in_ms)
-		usleep(time_in_ms / 10);
+	while ((ft_actual_time() - start_time) < time_in_ms && !philo.args->is_dead)
+		usleep(time_in_ms / 100);
 }

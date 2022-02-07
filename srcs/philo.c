@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:29:12 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/02 12:29:32 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/07 11:16:46 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	*philosopher(void *philo_void)
 	philo = (t_philo *)philo_void;
 	i = 0;
 	if (philo->id % 2)
-		ft_usleep(10);
+		ft_usleep(10, *philo);
 	while (!philo->args->is_dead
 		&& philo->args->nbr_eat < philo->args->nbr_philo)
 	{
@@ -81,15 +81,11 @@ int	main(int argc, char **argv)
 	t_philo			*philos;
 	int				i;
 
-	if (argc < 5 || argc > 6)
-	{
-		write(2, "Error number of arguments\n", 27);
+	if (ft_error(argc, argv))
 		return (1);
-	}
 	args = ft_init_args(argc, argv);
 	if (args.nbr_philo < 1)
-		return (6);
-	printf("int = %ld\n", args.time_to_die);
+		return (2);
 	philos = (t_philo *)malloc(sizeof(t_philo) * args.nbr_philo);
 	if (!philos)
 		return (4);
@@ -123,5 +119,18 @@ int	main(int argc, char **argv)
 		if (pthread_join(philos[i].thread, NULL) == -1)
 			return (EXIT_FAILURE);
 	}
+	i = -1;
+	if (args.is_dead || args.nbr_eat >= args.nbr_philo)
+	{
+		if (args.nbr_time_must_eat != -1 && args.nbr_eat >= args.nbr_philo)
+			printf("all philos have eaten at least %d times\n",
+				args.nbr_time_must_eat);
+		while (++i < args.nbr_philo)
+		{
+			pthread_mutex_destroy(&philos[i].fork_l);
+			pthread_detach(philos[i].thread);
+		}
+	}
+	// printf("actual time = %ld\n", ft_actual_time() - args.start);
 	return (0);
 }

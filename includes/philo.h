@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:26:06 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/02 12:27:54 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/07 10:56:08 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_philo
 }				t_philo;
 
 int			ft_atoi(const char *s);
-void		ft_usleep(long int time_in_ms);
+void		ft_usleep(long int time_in_ms, t_philo philo);
 long int	ft_actual_time(void);
 void		ft_take_fork(t_philo *philo);
 void		ft_died(t_philo *philo);
@@ -56,5 +56,7 @@ void		ft_think(t_philo *philo);
 void		ft_sleep(t_philo *philo);
 void		ft_eat(t_philo *philo);
 void		ft_write(char *str, t_philo *philo);
+int			ft_check_args_negative(char **nbrs);
+int			ft_error(int argc, char **argv);
 
 #endif

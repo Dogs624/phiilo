@@ -6,7 +6,7 @@
 #    By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/13 13:50:10 by jvander-          #+#    #+#              #
-#    Updated: 2022/02/01 12:43:34 by jvander-         ###   ########.fr        #
+#    Updated: 2022/02/07 10:37:47 by jvander-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRCS	=	$(SOURCES)philo.c \
 SRCS_UTILS	=	$(UTILS)ft_utils.c \
 				$(UTILS)ft_atoi.c \
 				
-SRCS_ERRORS	=	
+SRCS_ERRORS	=	$(ERRORS)ft_check_args.c \
+				$(ERRORS)ft_errors.c \
 
 #-------------------OBJECTS----------------------
 
