@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:29:12 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 11:16:46 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/07 15:27:51 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ static	t_philo	ft_init_philo(int id, t_args *args)
 	return (philo);
 }
 
+static int	ft_check_death(t_philo *philo)
+{
+	if (!philo->args->is_dead
+		&& philo->args->nbr_eat < philo->args->nbr_philo)
+		return (1);
+	return (0);
+}
+
 void	*philosopher(void *philo_void)
 {
 	t_philo	*philo;
@@ -57,17 +65,16 @@ void	*philosopher(void *philo_void)
 
 	philo = (t_philo *)philo_void;
 	i = 0;
+	if (philo->args->nbr_philo == 1)
+	{
+		ft_usleep(philo->args->time_to_die, *philo);
+		ft_died(philo);
+	}
 	if (philo->id % 2)
 		ft_usleep(10, *philo);
-	while (!philo->args->is_dead
-		&& philo->args->nbr_eat < philo->args->nbr_philo)
+	while (ft_check_death(philo))
 	{
 		ft_take_fork(philo);
-		if (ft_actual_time() - philo->last_time_eat > philo->args->time_to_die)
-		{
-			ft_died(philo);
-			return (NULL);
-		}
 		ft_eat(philo);
 		ft_sleep(philo);
 		ft_think(philo);

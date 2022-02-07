@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 12:29:29 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 11:14:28 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/07 15:30:36 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,24 @@ void	ft_died(t_philo *philo)
 
 void	ft_take_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->fork_l);
-	ft_write("has taken a fork", philo);
-	if (philo->args->nbr_philo == 1)
+	if (philo->args->is_dead)
+		return ;
+	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
 	{
-		ft_usleep(philo->args->time_to_die, *philo);
 		ft_died(philo);
+		return ;
+	}
+	pthread_mutex_lock(&philo->fork_l);
+	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
+	{
+		ft_died(philo);
+		return ;
+	}
+	ft_write("has taken a fork", philo);
+	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
+	{
+		ft_died(philo);
+		return ;
 	}
 	pthread_mutex_lock(philo->fork_r);
 	ft_write("has taken a fork", philo);
