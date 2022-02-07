@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 12:29:29 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 15:30:36 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/07 16:07:22 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@ void	ft_sleep(t_philo *philo)
 	ft_write("is sleeping", philo);
 	if (!philo->args->is_dead)
 		ft_usleep(philo->args->time_to_sleep, *philo);
+	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
+		ft_died(philo);
 }
 
 void	ft_think(t_philo *philo)
 {
+	if (philo->args->is_dead)
+		return ;
 	ft_write("is thinking", philo);
 }
 
@@ -42,8 +46,6 @@ void	ft_died(t_philo *philo)
 
 void	ft_take_fork(t_philo *philo)
 {
-	if (philo->args->is_dead)
-		return ;
 	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
 	{
 		ft_died(philo);

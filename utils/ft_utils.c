@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:41:34 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 11:13:10 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/07 16:06:45 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	ft_usleep(long int time_in_ms, t_philo philo)
 
 	start_time = 0;
 	start_time = ft_actual_time();
-	while ((ft_actual_time() - start_time) < time_in_ms && !philo.args->is_dead)
+	while ((ft_actual_time() - start_time) < time_in_ms
+		&& ft_actual_time() - philo.last_time_eat < philo.args->time_to_die
+		&& !philo.args->is_dead)
 		usleep(time_in_ms / 100);
 }
