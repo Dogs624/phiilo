@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:29:12 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 16:00:53 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 13:33:19 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,15 @@ static	t_philo	ft_init_philo(int id, t_args *args)
 
 static int	ft_check_death(t_philo *philo)
 {
-	if (!philo->args->is_dead
-		&& philo->args->nbr_eat < philo->args->nbr_philo)
+	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
+	{
+		ft_died(philo);
+		return (0);
+	}
+	if (!philo->args->is_dead && philo->args->nbr_eat < philo->args->nbr_philo)
+	{
 		return (1);
+	}
 	return (0);
 }
 
@@ -74,10 +80,14 @@ void	*philosopher(void *philo_void)
 		ft_usleep(10, *philo);
 	while (ft_check_death(philo))
 	{
-		ft_take_fork(philo);
-		ft_eat(philo);
-		ft_sleep(philo);
-		ft_think(philo);
+		if (ft_check_death(philo))
+			ft_take_fork(philo);
+		if (ft_check_death(philo))
+			ft_eat(philo);
+		if (ft_check_death(philo))
+			ft_sleep(philo);
+		if (ft_check_death(philo))
+			ft_think(philo);
 	}
 	return (NULL);
 }
@@ -134,10 +144,9 @@ int	main(int argc, char **argv)
 				args.nbr_time_must_eat);
 		while (++i < args.nbr_philo)
 		{
-			pthread_mutex_destroy(&philos[i].fork_l);
 			pthread_detach(philos[i].thread);
+			pthread_mutex_destroy(&philos[i].fork_l);
 		}
 	}
-	// printf("actual time = %ld\n", ft_actual_time() - args.start);
 	return (0);
 }

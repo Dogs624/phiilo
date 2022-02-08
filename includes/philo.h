@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:26:06 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 10:56:08 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 11:47:07 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_philo
 {
 	int						id;
 	pthread_t				thread;
+	pthread_t				death;
 	time_t					last_time_eat;
 	pthread_mutex_t			*fork_r;
 	pthread_mutex_t			fork_l;

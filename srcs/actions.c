@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 12:29:29 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 16:07:22 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 12:54:54 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ void	ft_take_fork(t_philo *philo)
 		return ;
 	}
 	ft_write("has taken a fork", philo);
+	pthread_mutex_lock(philo->fork_r);
 	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
 	{
 		ft_died(philo);
 		return ;
 	}
-	pthread_mutex_lock(philo->fork_r);
 	ft_write("has taken a fork", philo);
 }
 
