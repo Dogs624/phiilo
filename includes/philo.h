@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:26:06 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/08 11:47:07 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 14:03:59 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,18 @@ typedef struct s_philo
 {
 	int						id;
 	pthread_t				thread;
-	pthread_t				death;
 	time_t					last_time_eat;
 	pthread_mutex_t			*fork_r;
 	pthread_mutex_t			fork_l;
 	int						nbr_eat;
 	t_args					*args;
 }				t_philo;
+
+typedef struct s_death
+{
+	t_args	*args;
+	t_philo	**philos;
+}				t_death;
 
 int			ft_atoi(const char *s);
 void		ft_usleep(long int time_in_ms, t_philo philo);

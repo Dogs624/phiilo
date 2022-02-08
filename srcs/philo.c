@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:29:12 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/08 13:33:19 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 14:04:15 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	*philosopher(void *philo_void)
 	}
 	return (NULL);
 }
+
 
 int	main(int argc, char **argv)
 {
