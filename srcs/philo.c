@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:29:12 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/08 14:04:15 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 15:54:53 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,6 @@ static t_args	ft_init_args(int argc, char **argv)
 	if (pthread_mutex_init(&args.mutex_dead, NULL) == -1)
 		args.nbr_philo = -1;
 	return (args);
-}
-
-static	t_philo	ft_init_philo(int id, t_args *args)
-{
-	t_philo	philo;
-
-	philo.id = id;
-	philo.last_time_eat = args->start;
-	philo.nbr_eat = 0;
-	philo.args = args;
-	philo.fork_r = NULL;
-	if (pthread_mutex_init(&philo.fork_l, NULL) == -1)
-		philo.id = -1;
-	return (philo);
 }
 
 static int	ft_check_death(t_philo *philo)
@@ -80,18 +66,40 @@ void	*philosopher(void *philo_void)
 		ft_usleep(10, *philo);
 	while (ft_check_death(philo))
 	{
-		if (ft_check_death(philo))
-			ft_take_fork(philo);
-		if (ft_check_death(philo))
-			ft_eat(philo);
-		if (ft_check_death(philo))
-			ft_sleep(philo);
-		if (ft_check_death(philo))
-			ft_think(philo);
+		ft_take_fork(philo);
+		ft_eat(philo);
+		ft_sleep(philo);
+		ft_think(philo);
 	}
 	return (NULL);
 }
 
+int	ft_end(t_args args, t_philo *philos)
+{
+	int	i;
+
+	i = -1;
+	while (++i < args.nbr_philo)
+	{
+		if (pthread_join(philos[i].thread, NULL) == -1)
+			return (ft_free(philos, 7));
+	}
+	i = -1;
+	if (args.is_dead || args.nbr_eat >= args.nbr_philo)
+	{
+		if (args.nbr_time_must_eat != -1 && args.nbr_eat >= args.nbr_philo)
+			printf("all philos have eaten at least %d times\n",
+				args.nbr_time_must_eat);
+		while (++i < args.nbr_philo)
+		{
+			if (pthread_detach(philos[i].thread))
+				return (ft_free(philos, 8));
+			if (pthread_mutex_destroy(&philos[i].fork_l))
+				return (ft_free(philos, 9));
+		}
+	}
+	return (0);
+}
 
 int	main(int argc, char **argv)
 {
@@ -107,47 +115,14 @@ int	main(int argc, char **argv)
 	philos = (t_philo *)malloc(sizeof(t_philo) * args.nbr_philo);
 	if (!philos)
 		return (4);
+	if (!ft_init_tab(philos, &args))
+		return (5);
 	i = -1;
 	while (++i < args.nbr_philo)
 	{
-		philos[i] = ft_init_philo(i, &args);
-		if (philos[i].id == -1)
-		{
-			free(philos);
-			return (5);
-		}
+		if (pthread_create(&philos[i].thread, NULL, philosopher,
+				(void *)&philos[i]))
+			return (ft_free(philos, 6));
 	}
-	i = -1;
-	while (++i < args.nbr_philo)
-	{
-		if (i == args.nbr_philo - 1)
-			philos[i].fork_r = &philos[0].fork_l;
-		else
-			philos[i].fork_r = &philos[i + 1].fork_l;
-	}
-	i = -1;
-	while (++i < args.nbr_philo)
-	{
-		pthread_create(&philos[i].thread, NULL, philosopher,
-			(void *)&philos[i]);
-	}
-	i = -1;
-	while (++i < args.nbr_philo)
-	{
-		if (pthread_join(philos[i].thread, NULL) == -1)
-			return (EXIT_FAILURE);
-	}
-	i = -1;
-	if (args.is_dead || args.nbr_eat >= args.nbr_philo)
-	{
-		if (args.nbr_time_must_eat != -1 && args.nbr_eat >= args.nbr_philo)
-			printf("all philos have eaten at least %d times\n",
-				args.nbr_time_must_eat);
-		while (++i < args.nbr_philo)
-		{
-			pthread_detach(philos[i].thread);
-			pthread_mutex_destroy(&philos[i].fork_l);
-		}
-	}
-	return (0);
+	return (ft_end(args, philos));
 }

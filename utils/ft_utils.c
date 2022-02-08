@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:41:34 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 16:06:45 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 15:46:55 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,19 @@ void	ft_usleep(long int time_in_ms, t_philo philo)
 		&& ft_actual_time() - philo.last_time_eat < philo.args->time_to_die
 		&& !philo.args->is_dead)
 		usleep(time_in_ms / 100);
+}
+
+int	ft_check_time(t_philo *philo)
+{
+	if ((philo->args->time_to_eat - philo->args->time_to_sleep >= 50
+			|| philo->args->time_to_eat - philo->args->time_to_sleep <= -50))
+		return (1);
+	return (0);
+}
+
+int	ft_free(t_philo *philos, int i)
+{
+	if (philos)
+		free(philos);
+	return (i);
 }

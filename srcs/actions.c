@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 12:29:29 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/08 14:22:02 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/08 15:36:57 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@ void	ft_sleep(t_philo *philo)
 		ft_died(philo);
 }
 
-static int	ft_check_time(t_philo *philo)
-{
-	if ((philo->args->time_to_eat - philo->args->time_to_sleep >= 50
-		|| philo->args->time_to_eat - philo->args->time_to_sleep <= -50))
-		return (1);
-	return (0);
-}
 void	ft_think(t_philo *philo)
 {
 	if (philo->args->is_dead)
@@ -49,8 +42,6 @@ void	ft_died(t_philo *philo)
 		philo->args->is_dead = 1;
 	}
 	pthread_mutex_unlock(&philo->args->mutex_dead);
-	pthread_mutex_unlock(&philo->fork_l);
-	pthread_mutex_unlock(philo->fork_r);
 }
 
 void	ft_take_fork(t_philo *philo)

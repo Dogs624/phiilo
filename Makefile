@@ -6,7 +6,7 @@
 #    By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/13 13:50:10 by jvander-          #+#    #+#              #
-#    Updated: 2022/02/07 14:27:26 by jvander-         ###   ########.fr        #
+#    Updated: 2022/02/08 15:35:23 by jvander-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,12 +22,13 @@ ERRORS		=	./errors/
 #-------------------COMPILATION----------------------
 
 CC			=	gcc -g
-FLAGS		=	-Wall -Werror -Wextra
+FLAGS		=	-Wall -Werror -Wextra 
 
 #-------------------SOURCES FILES----------------------
 
 SRCS	=	$(SOURCES)philo.c \
 			$(SOURCES)actions.c \
+			$(SOURCES)init.c \
 
 SRCS_UTILS	=	$(UTILS)ft_utils.c \
 				$(UTILS)ft_atoi.c \
