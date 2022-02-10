@@ -6,7 +6,7 @@
 #    By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/13 13:50:10 by jvander-          #+#    #+#              #
-#    Updated: 2022/02/08 15:35:23 by jvander-         ###   ########.fr        #
+#    Updated: 2022/02/10 13:26:56 by jvander-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ ERRORS		=	./errors/
 #-------------------COMPILATION----------------------
 
 CC			=	gcc -g
-FLAGS		=	-Wall -Werror -Wextra 
+FLAGS		=	-Wall -Werror -Wextra
 
 #-------------------SOURCES FILES----------------------
 

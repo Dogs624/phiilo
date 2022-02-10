@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:29:12 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/10 11:49:44 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/10 13:02:41 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,16 @@ static int	ft_check_death(t_philo *philo)
 		ft_died(philo);
 		return (0);
 	}
+	pthread_mutex_lock(&philo->args->mutex_dead);
+	pthread_mutex_lock(&philo->args->mutex_eat);
 	if (!philo->args->is_dead && philo->args->nbr_eat < philo->args->nbr_philo)
 	{
+		pthread_mutex_unlock(&philo->args->mutex_dead);
+		pthread_mutex_unlock(&philo->args->mutex_eat);
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->args->mutex_dead);
+	pthread_mutex_unlock(&philo->args->mutex_eat);
 	return (0);
 }
 
@@ -59,11 +65,11 @@ void	*philosopher(void *philo_void)
 	i = 0;
 	if (philo->args->nbr_philo == 1)
 	{
-		ft_usleep(philo->args->time_to_die, *philo);
+		ft_usleep(philo->args->time_to_die, philo);
 		ft_died(philo);
 	}
 	if (philo->id % 2)
-		ft_usleep(10, *philo);
+		ft_usleep(10, philo);
 	while (ft_check_death(philo))
 	{
 		ft_take_fork(philo);

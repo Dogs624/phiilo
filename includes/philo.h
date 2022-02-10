@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:26:06 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/10 11:47:06 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/10 13:02:31 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_death
 }				t_death;
 
 int			ft_atoi(const char *s);
-void		ft_usleep(long int time_in_ms, t_philo philo);
+void		ft_usleep(long int time_in_ms, t_philo *philo);
 long int	ft_actual_time(void);
 void		ft_take_fork(t_philo *philo);
 void		ft_died(t_philo *philo);

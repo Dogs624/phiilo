@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:41:34 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/10 11:36:33 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/10 13:27:29 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 void	ft_write(char *str, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->args->mutex_write);
+	pthread_mutex_lock(&philo->args->mutex_dead);
+	pthread_mutex_lock(&philo->args->mutex_eat);
 	if (!philo->args->is_dead && philo->args->nbr_eat < philo->args->nbr_philo)
 	{
 		printf("%ld %d %s\n", ft_actual_time() - philo->args->start,
 			philo->id + 1, str);
 	}
+	pthread_mutex_unlock(&philo->args->mutex_dead);
 	pthread_mutex_unlock(&philo->args->mutex_write);
+	pthread_mutex_unlock(&philo->args->mutex_eat);
 }
 
 long int	ft_actual_time(void)
@@ -35,16 +39,22 @@ long int	ft_actual_time(void)
 	return (time);
 }
 
-void	ft_usleep(long int time_in_ms, t_philo philo)
+void	ft_usleep(long int time_in_ms, t_philo *philo)
 {
 	long int	start_time;
 
 	start_time = 0;
 	start_time = ft_actual_time();
+	pthread_mutex_lock(&philo->args->mutex_dead);
 	while ((ft_actual_time() - start_time) < time_in_ms
-		&& ft_actual_time() - philo.last_time_eat < philo.args->time_to_die
-		&& !philo.args->is_dead)
-		usleep(time_in_ms / 100);
+		&& ft_actual_time() - philo->last_time_eat < philo->args->time_to_die
+		&& !philo->args->is_dead)
+	{
+		pthread_mutex_unlock(&philo->args->mutex_dead);
+		usleep(time_in_ms / 10);
+		pthread_mutex_lock(&philo->args->mutex_dead);
+	}
+	pthread_mutex_unlock(&philo->args->mutex_dead);
 }
 
 int	ft_check_time(t_philo *philo)

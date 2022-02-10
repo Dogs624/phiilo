@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 12:29:29 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/10 11:10:08 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/10 13:27:16 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,22 @@
 void	ft_sleep(t_philo *philo)
 {
 	ft_write("is sleeping", philo);
+	pthread_mutex_lock(&philo->args->mutex_dead);
 	if (!philo->args->is_dead)
-		ft_usleep(philo->args->time_to_sleep, *philo);
+	{
+		pthread_mutex_unlock(&philo->args->mutex_dead);
+		ft_usleep(philo->args->time_to_sleep, philo);
+	}
+	pthread_mutex_unlock(&philo->args->mutex_dead);
 	if (ft_actual_time() - philo->last_time_eat >= philo->args->time_to_die)
 		ft_died(philo);
 }
 
 void	ft_think(t_philo *philo)
 {
-	if (philo->args->is_dead)
-		return ;
 	ft_write("is thinking", philo);
 	if (ft_check_time(philo))
-		ft_usleep(50, *philo);
+		ft_usleep(50, philo);
 }
 
 void	ft_died(t_philo *philo)
@@ -71,7 +74,7 @@ void	ft_eat(t_philo *philo)
 {
 	philo->last_time_eat = ft_actual_time();
 	ft_write("is eating", philo);
-	ft_usleep(philo->args->time_to_eat, *philo);
+	ft_usleep(philo->args->time_to_eat, philo);
 	philo->nbr_eat++;
 	pthread_mutex_unlock(&philo->fork_l);
 	pthread_mutex_unlock(philo->fork_r);
