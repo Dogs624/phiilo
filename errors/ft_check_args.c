@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:41:57 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/07 10:42:31 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/10 11:46:43 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,17 @@ int	ft_check_args_negative(char **nbrs)
 			return (1);
 	}
 	return (0);
+}
+
+int	ft_check_digit(char *nbr)
+{
+	int	i;
+
+	i = -1;
+	while (nbr[++i])
+	{
+		if (nbr[i] < '0' || nbr[i] > '9')
+			return (0);
+	}
+	return (1);
 }

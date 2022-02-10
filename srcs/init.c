@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 15:34:07 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/08 15:34:38 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/10 11:43:52 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,29 @@ int	ft_init_tab(t_philo *philos, t_args *args)
 			philos[i].fork_r = &philos[i + 1].fork_l;
 	}
 	return (1);
+}
+
+int	ft_destroy(t_args *args, t_philo *philos)
+{
+	int	i;
+
+	i = -1;
+	while (++i < args->nbr_philo)
+	{
+		if (pthread_detach(philos[i].thread) == -1)
+		{
+			pthread_mutex_unlock(&args->mutex_dead);
+			pthread_mutex_unlock(&args->mutex_eat);
+			return (ft_free(philos, 8));
+		}
+		if (pthread_mutex_destroy(&philos[i].fork_l) == -1)
+		{
+			pthread_mutex_unlock(&args->mutex_dead);
+			pthread_mutex_unlock(&args->mutex_eat);
+			return (ft_free(philos, 9));
+		}
+	}
+	pthread_mutex_unlock(&args->mutex_dead);
+	pthread_mutex_unlock(&args->mutex_eat);
+	return (ft_free(philos, 0));
 }

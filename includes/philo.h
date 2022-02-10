@@ -6,7 +6,7 @@
 /*   By: jvander- <jvander-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 11:26:06 by jvander-          #+#    #+#             */
-/*   Updated: 2022/02/08 15:47:05 by jvander-         ###   ########.fr       */
+/*   Updated: 2022/02/10 11:47:06 by jvander-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ int			ft_check_time(t_philo *philo);
 int			ft_init_tab(t_philo *philos, t_args *args);
 t_philo		ft_init_philo(int id, t_args *args);
 int			ft_free(t_philo *philos, int i);
+int			ft_destroy(t_args *args, t_philo *philos);
+int			ft_check_digit(char *nbr);
 
 #endif
